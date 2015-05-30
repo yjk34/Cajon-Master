@@ -16,21 +16,6 @@ void setup() {
 }
 
 void loop() {
-  /*if (Serial.available() > 0) {
-    char inChar = Serial.read();
-    serial_input_buf[index] = inChar;
-    index++;
-    if (inChar == '\n') {
-      serial_input_buf[index] = '\0';
-      index = 0;
-      bpm = atoi(serial_input_buf);
-      print_bpm();
-    }
-  }
-  hit();
-  int period = 60000 / bpm;
-  delay(period);  */
-
   //play("100100101001001010010010", 120, 8);
   play("10110111", 120, 8);
   delay(5000);
