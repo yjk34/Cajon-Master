@@ -11,8 +11,6 @@ void setup() {
   pinMode(relay_2, OUTPUT);
   Serial.begin(9600);
   relay_init();
-  bpm = 70;
-  print_bpm();
 }
 
 void loop() {
@@ -75,11 +73,5 @@ void relay_2_high() {
 
 void relay_2_low() {
   digitalWrite(relay_2, LOW);
-}
-
-void print_bpm() {
-  Serial.write("Current BPM : ");
-  Serial.print(bpm);
-  Serial.write('\n');
 }
   
