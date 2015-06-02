@@ -10,16 +10,16 @@ void setup() {
   pinMode(relay_1, OUTPUT);
   pinMode(relay_2, OUTPUT);
   Serial.begin(9600);
-  relay_init();
+  initRelay();
 }
 
 void loop() {
   //play("100100101001001010010010", 120, 8);
-  play("10110111", 120, 8);
+  playByScore("10110111", 120, 8);
   delay(5000);
 }
 
-void play(String score, int bpm, int tempo) {
+void playByScore(String score, int bpm, int tempo) {
   int period = (60000 / bpm) * 4 / tempo;
   int i;
   for (i=0 ; i<score.length() ; i++) {
@@ -28,21 +28,21 @@ void play(String score, int bpm, int tempo) {
         delay(period);
         break;
       case '1': // hit
-        hit();
+        hitMotion();
         delay(period - strike_delay - back_delay - switch_delay - switch_delay);
         break;
     }
   }
 }
 
-void hit() {
+void hitMotion() {
   strike();
   delay(strike_delay);
-  relay_init();
+  initRelay();
   delay(switch_delay);
   back();
   delay(back_delay);
-  relay_init();
+  initRelay();
   delay(switch_delay);
 }
 
@@ -54,7 +54,7 @@ void back() {
   relay_2_high();
 }
 
-void relay_init() {
+void initRelay() {
   digitalWrite(relay_1, LOW);
   digitalWrite(relay_2, LOW);
 }
