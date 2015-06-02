@@ -47,11 +47,11 @@ void hitMotion() {
 }
 
 void strike() {
-  relay_1_high();
+  setRelayHigh(relay_1);
 }
 
 void back() {
-  relay_2_high();
+  setRelayHigh(relay_2);
 }
 
 void initRelay() {
@@ -59,19 +59,10 @@ void initRelay() {
   digitalWrite(relay_2, LOW);
 }
 
-void relay_1_high() {
-  digitalWrite(relay_1, HIGH);
+void setRelayHigh(int relayPin) {
+  digitalWrite(relayPin, HIGH);
 }
 
-void relay_1_low() {
-  digitalWrite(relay_1, LOW);
+void setRelayLow(int relayPin) {
+  digitalWrite(relayPin, LOW);
 }
-
-void relay_2_high() {
-  digitalWrite(relay_2, HIGH);
-}
-
-void relay_2_low() {
-  digitalWrite(relay_2, LOW);
-}
-  
