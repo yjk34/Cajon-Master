@@ -7,15 +7,12 @@ const int bass_drum_relay_1 = 10;
 const int bass_drum_relay_2 = 11;
 const int side_drum_relay_1 = 12;
 const int side_drum_relay_2 = 13;
-char serial_input_buf[50];
-int index = 0;
-int bpm;
+
 void setup() {
   pinMode(bass_drum_relay_1, OUTPUT);
   pinMode(bass_drum_relay_2, OUTPUT);
   pinMode(side_drum_relay_1, OUTPUT);
   pinMode(side_drum_relay_2, OUTPUT);
-  Serial.begin(9600);
   initBassDrumRelay();
   initSideDrumRelay();
 }
