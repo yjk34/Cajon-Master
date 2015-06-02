@@ -1,3 +1,5 @@
+const int msperMin = 60000;
+const int beatsperBar = 4;
 const int strike_delay = 50;
 const int back_delay = 30;
 const int switch_delay = 60;
@@ -20,7 +22,7 @@ void loop() {
 }
 
 void playByScore(String score, int bpm, int tempo) {
-  int period = (60000 / bpm) * 4 / tempo;
+  int period = (msperMin / bpm) * beatsperBar / tempo;
   int i;
   for (i=0 ; i<score.length() ; i++) {
     switch (score.charAt(i)) {
