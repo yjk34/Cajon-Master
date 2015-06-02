@@ -3,16 +3,21 @@ const int beatsperBar = 4;
 const int strike_delay = 50;
 const int back_delay = 30;
 const int switch_delay = 60;
-const int relay_1 = 12;
-const int relay_2 = 13;
+const int bass_drum_relay_1 = 10;
+const int bass_drum_relay_2 = 11;
+const int side_drum_relay_1 = 12;
+const int side_drum_relay_2 = 13;
 char serial_input_buf[50];
 int index = 0;
 int bpm;
 void setup() {
-  pinMode(relay_1, OUTPUT);
-  pinMode(relay_2, OUTPUT);
+  pinMode(bass_drum_relay_1, OUTPUT);
+  pinMode(bass_drum_relay_2, OUTPUT);
+  pinMode(side_drum_relay_1, OUTPUT);
+  pinMode(side_drum_relay_2, OUTPUT);
   Serial.begin(9600);
-  initRelay();
+  initBassDrumRelay();
+  initSideDrumRelay();
 }
 
 void loop() {
@@ -29,36 +34,64 @@ void playByScore(String score, int bpm, int tempo) {
       case '0': // rest
         delay(period);
         break;
-      case '1': // hit
-        hitMotion();
+      case '1': // hit side drum
+        sideDrumHitMotion();
+        delay(period - strike_delay - back_delay - switch_delay - switch_delay);
+        break;
+      case '2': // hit bass drum
+        bassDrumHitMotion();
         delay(period - strike_delay - back_delay - switch_delay - switch_delay);
         break;
     }
   }
 }
 
-void hitMotion() {
-  strike();
+void sideDrumHitMotion() {
+  sideDrumStrike();
   delay(strike_delay);
-  initRelay();
+  initSideDrumRelay();
   delay(switch_delay);
-  back();
+  sideDrumBack();
   delay(back_delay);
-  initRelay();
+  initSideDrumRelay();
   delay(switch_delay);
 }
 
-void strike() {
-  setRelayHigh(relay_1);
+void sideDrumStrike() {
+  setRelayHigh(side_drum_relay_1);
 }
 
-void back() {
-  setRelayHigh(relay_2);
+void sideDrumBack() {
+  setRelayHigh(side_drum_relay_2);
 }
 
-void initRelay() {
-  digitalWrite(relay_1, LOW);
-  digitalWrite(relay_2, LOW);
+void bassDrumHitMotion() {
+  bassDrumStrike();
+  delay(strike_delay);
+  initBassDrumRelay();
+  delay(switch_delay);
+  bassDrumBack();
+  delay(back_delay);
+  initBassDrumRelay();
+  delay(switch_delay);
+}
+
+void bassDrumStrike() {
+  setRelayHigh(bass_drum_relay_1);
+}
+
+void bassDrumBack() {
+  setRelayHigh(bass_drum_relay_2);
+}
+
+void initSideDrumRelay() {
+  setRelayLow(side_drum_relay_1);
+  setRelayLow(side_drum_relay_2);
+}
+
+void initBassDrumRelay() {
+  setRelayLow(bass_drum_relay_1);
+  setRelayLow(bass_drum_relay_2);
 }
 
 void setRelayHigh(int relayPin) {
