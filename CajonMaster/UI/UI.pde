@@ -13,11 +13,11 @@ final static int[] patternRectParams = {320, 200, 220, 140, 10, 10, 10, 10};
 final static int[] speedRectColor = {250, 166, 0};
 final static int[] patternRectColor = {9, 255, 132};
 final static int[] speedList = {80, 100, 120, 140, 160, 180};
-final static String[] patternList = {"Pattern1", "Pattern2", "Pattern3", "Pattern4"};
+final static String[] patternList = {"4 Beats - Typical", "8 Beats - Folk Rock", "8 Beats - Typical", "16 beats - Typical"};
 
 // [R, G, B, Alpha, Size]
-final static int[] tyep1HeaderParams = {255, 255, 255, 150, 30};
-final static int[] tyep2HeaderParams = {255, 255, 255, 255, 40};
+final static int[] tyep1HeaderParams = {255, 255, 255, 150, 20};
+final static int[] tyep2HeaderParams = {255, 255, 255, 255, 30};
 final static float type1FineTuneRatio = 0.5;
 final static float type2FineTuneRatio = 0.5;
 
@@ -27,9 +27,11 @@ final static int[] logoParams = {380, 15, 120, 160, 255, 255, 255};
 final static int[] titleParams = {189, 142, 24, 58, 270, 150};
 
 void setup() {
-	//arduino = new Arduino(this, Arduino.list()[0], 57600);
 	initScene();
 	initGlobalVariables();
+
+	arduino = new Arduino(this, Arduino.list()[0], 57600);
+	arduinoSetup();
 }
 
 void initScene() {
@@ -49,6 +51,8 @@ void initGlobalVariables() {
 void draw() {
 	drawBackground();
 	drawCurrentOptions();
+
+	arduinoLoop();
 }
 
 void drawBackground() {
