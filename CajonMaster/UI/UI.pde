@@ -4,6 +4,7 @@ import cc.arduino.*;
 Arduino arduino;
 PImage logo;
 PFont titleFont;
+PFont type1HeaderFont;
 
 final static int windowW = 600;
 final static int windowH = 400;
@@ -13,11 +14,19 @@ final static int[] patternRectParams = {320, 200, 220, 140, 10, 10, 10, 10};
 final static int[] speedRectColor = {250, 166, 0};
 final static int[] patternRectColor = {9, 255, 132};
 final static int[] speedList = {80, 100, 120, 140, 160, 180};
+
+/* 
+	Format: 
+		1 digit - [Beats Num] (2 for 4 beats, 3 for 8 beats, 4 for 16 beats...)
+		3 digit - [Speed]	  (ex. 120, 180...)
+		N digit - [tone]	  (0 for nothing, 1 for bass drum, 2 for snare, 4 for hihat)
+*/
 final static String[] patternList = {"4 Beats - Typical", "8 Beats - Folk Rock", "8 Beats - Typical", "16 beats - Typical"};
+final static String[] rhythmList = {"21212", "314214121", "314241124", "41444244414142444"};
 
 // [R, G, B, Alpha, Size]
-final static int[] tyep1HeaderParams = {255, 255, 255, 150, 20};
-final static int[] tyep2HeaderParams = {255, 255, 255, 255, 30};
+final static int[] tyep1HeaderParams = {255, 255, 255, 150, 16};
+final static int[] tyep2HeaderParams = {255, 255, 255, 255, 26};
 final static float type1FineTuneRatio = 0.5;
 final static float type2FineTuneRatio = 0.5;
 
@@ -30,8 +39,13 @@ void setup() {
 	initScene();
 	initGlobalVariables();
 
-	arduino = new Arduino(this, Arduino.list()[0], 57600);
-	arduinoSetup();
+	try {
+		arduino = new Arduino(this, Arduino.list()[0], 57600);
+		arduinoSetup();
+	} catch (Exception ex) {
+		if (arduino == null)
+			println("Arduino is not ready... Turn out all arduino functions.");
+	}
 }
 
 void initScene() {
@@ -41,6 +55,7 @@ void initScene() {
 	logo.resize(logoParams[2], logoParams[3]);
 
 	titleFont = loadFont("Res/VladimirScript-48.vlw");
+	type1HeaderFont = loadFont("Res/type1Header.vlw");
 }
 
 void initGlobalVariables() {
@@ -52,7 +67,8 @@ void draw() {
 	drawBackground();
 	drawCurrentOptions();
 
-	arduinoLoop();
+  	if (arduino != null)
+		arduinoLoop();
 }
 
 void drawBackground() {
@@ -76,7 +92,7 @@ void drawBackground() {
 }
 
 void drawCurrentOptions() {
-	textSize(tyep1HeaderParams[4]);
+	textFont(type1HeaderFont, tyep1HeaderParams[4]);
 	textAlign(CENTER);
     fill(tyep1HeaderParams[0], tyep1HeaderParams[1], tyep1HeaderParams[2], tyep1HeaderParams[3]);
 
@@ -89,7 +105,7 @@ void drawCurrentOptions() {
     text(patternList[ (curPatternIdx + 1) % patternList.length ], patternRectParams[0] + patternRectParams[2] * type1FineTuneRatio, patternRectParams[1] + patternRectParams[3] - tyep1HeaderParams[4]);
 
     // Show current speed
-    textSize(tyep2HeaderParams[4]);
+    textFont(type1HeaderFont, tyep2HeaderParams[4]);
     textAlign(CENTER);
     fill(tyep2HeaderParams[0], tyep2HeaderParams[1], tyep2HeaderParams[2], tyep2HeaderParams[3]);
 
