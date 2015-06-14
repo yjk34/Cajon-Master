@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CajonMaster</string>
+    <string name="connect_activity_title">ConnectActivity</string>
+    <string name="main_activity_title">MainActivity</string>
+    <string name="settings_activity_title">SettingsActivity</string>
+    <string name="connecting">Connecting with Cajon-Master ...</string>
+    <string name="dialog_ip_hint">IP Address</string>
+    <string name="dialog_port_hint">Port</string>
+</resources>

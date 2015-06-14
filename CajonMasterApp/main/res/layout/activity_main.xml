@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fcf="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg3">
+
+    <at.technikum.mti.fancycoverflow.FancyCoverFlow
+        android:id="@+id/songSelectorView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        fcf:maxRotation="45"
+        fcf:unselectedAlpha="0.5"
+        fcf:unselectedSaturation="0.0"
+        fcf:unselectedScale="0.4"
+        android:layout_below="@+id/logoImage"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:src="@drawable/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/connectText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connecting"
+        android:textColor="#ffffff"
+        android:textSize="15dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+    <ImageButton
+        android:id="@+id/playButton"
+        android:background="@drawable/play"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="100dp"
+        android:visibility="gone"/>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/connectProgressBar"
+        android:layout_above="@+id/connectText"
+        android:layout_centerHorizontal="true"/>
+
+    <View
+        android:id="@+id/horizontalLine"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="#ffffff"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="80dp"
+        android:visibility="gone"/>
+    
+    <LinearLayout
+        android:id="@+id/playingSongInfo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="25dp"
+        android:visibility="gone">
+            <TextView
+                android:id="@+id/playingSongName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="songname"
+                android:textSize="25dp"
+                />
+            <TextView
+                android:id="@+id/playingSongAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:text="songname"
+                android:textSize="15dp"
+                />
+    </LinearLayout>
+
+
+
+    <ImageButton
+        android:id="@+id/controlButton"
+        android:background="@drawable/conti"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:visibility="gone"/>
+
+</RelativeLayout>
