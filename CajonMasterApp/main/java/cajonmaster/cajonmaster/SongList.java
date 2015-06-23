@@ -6,10 +6,10 @@ public class SongList {
     protected static ArrayList<Song> list;
     static{
         list = new ArrayList<Song>();
-        SongList.list.add(new Song(R.drawable.sad, "傷心的人別聽慢歌", "sad", "五月天"));
         SongList.list.add(new Song(R.drawable.ruchen, "入陣曲", "ruchen", "五月天"));
         SongList.list.add(new Song(R.drawable.general, "將軍令", "general", "五月天"));
-        SongList.list.add(new Song(R.drawable.stop, "所以我停下來", "strop", "那我懂你意思了"));
+        SongList.list.add(new Song(R.drawable.sad, "傷心的人別聽慢歌", "sad", "五月天"));
+        SongList.list.add(new Song(R.drawable.stop, "所以我停下來", "stop", "那我懂你意思了"));
         SongList.list.add(new Song(R.drawable.chaosmyth, "C.H.A.O.S.M.Y.T.H", "chaosmyth", "ONE OK ROCK"));
     }
 }
