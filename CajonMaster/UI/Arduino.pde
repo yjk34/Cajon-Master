@@ -1,15 +1,13 @@
 final static int msperMin = 60000;
 final static int beatsperBar = 4;
-final static int strike_delay = 50;
-final static int back_delay = 30;
-final static int switch_delay = 30;
-final static int bass_drum_relay_1 = 10;
-final static int bass_drum_relay_2 = 11;
-final static int side_drum_relay_1 = 12;
-final static int side_drum_relay_2 = 13;
+final static int strike_delay = 30;
+final static int[][] drumRelayPin = {{6, 7}, {9, 10}, {12, 13}};
+final static int[] prevDrumTime = {0, 0, 0};
+final static boolean[] isDrumBack = {false, false, false};
 
 final static int millisLimit = 3000; // So the lowest BPM is support for 20 ( 60 * 1000 / 3000 = 20)
 
+static boolean isPause = true;
 static boolean isReadyForRhythm = true;
 static int prevActionTime = 0;
 
@@ -18,12 +16,12 @@ static String curScore = "1000";
 static int curScoreIdx = 0;
 
 void arduinoSetup() {
-  arduino.pinMode(bass_drum_relay_1, Arduino.OUTPUT);
-  arduino.pinMode(bass_drum_relay_2, Arduino.OUTPUT);
-  arduino.pinMode(side_drum_relay_1, Arduino.OUTPUT);
-  arduino.pinMode(side_drum_relay_2, Arduino.OUTPUT);
-  initBassDrumRelay();
-  initSideDrumRelay();
+  for(int i=0; i<drumRelayPin.length; i++) {
+    arduino.pinMode(drumRelayPin[i][0], Arduino.OUTPUT);
+    arduino.pinMode(drumRelayPin[i][1], Arduino.OUTPUT);
+    initDrumRelay(i);
+  }
+    
 }
 
 void arduinoLoop() {
@@ -46,22 +44,45 @@ void getNewRhythm() {
 }
 
 void playByScore() {
-  int millisThresh = 60 * 1000 / speedList[curSpeedIdx]; // N BPM = every 60000 / N millis seconds for 1 hit
+  if (isPause) return;
+
+  int millisThresh = 60 * 1000 / (speedList[curSpeedIdx] *  curBeatNum / 4); // N BPM = every 60000 / N millis seconds for 1 hit
+  
+  for (int i=0; i<drumRelayPin.length; i++) {
+    if (prevDrumTime[i] >= 0) {
+      int curPastDrumPeriod = (millis() % millisLimit) - prevDrumTime[i];
+      curPastDrumPeriod = curPastDrumPeriod >= 0 ?curPastDrumPeriod : curPastDrumPeriod + millisLimit;
+      if (curPastDrumPeriod >= strike_delay) {
+        if (!isDrumBack[i]) {
+          isDrumBack[i] = false;
+          initDrumRelay(i);
+          prevDrumTime[i] = -1;
+          //isDrumBack[i] = true;
+          //doDrumBack(i);
+          //prevDrumTime[i] = millis() % millisLimit;
+        } else {
+          isDrumBack[i] = false;
+          initDrumRelay(i);
+          prevDrumTime[i] = -1;
+        }  
+      }
+    }
+  }
+
   int curPastTime = (millis() % millisLimit) - prevActionTime;
   curPastTime = curPastTime >= 0 ? curPastTime : curPastTime + millisLimit;
-
   if (curPastTime >= millisThresh) {
-    if ( (getTone(curScoreIdx) & 1) != 0 )
-      bassDrumHitMotion();
-    else if ( (getTone(curScoreIdx) & 2) != 0 )
-      sideDrumHitMotion();
-    else if ( (getTone(curScoreIdx) & 4) != 0 ) {
-      // TODO: It should be hihat, not empty
-      
-    }
-
+    //println("I use " + curPastTime + " to Hit when I need " + millisThresh + " ms.");
+    if ( (getTone(curScoreIdx) & 2) != 0 )
+      drumHitMotion(1);
+    else if ( (getTone(curScoreIdx) & 1) != 0 )
+      drumHitMotion(0);
+    else if ( (getTone(curScoreIdx) & 4) != 0 ) 
+      drumHitMotion(2);
     curScoreIdx++;
-    if (curScoreIdx == curBeatNum) {
+
+    // Check if it reach the end of the rhythm...
+    if (curScoreIdx == curScore.length()) {
       curScoreIdx = 0;
       isReadyForRhythm = true;
     } else {
@@ -74,54 +95,35 @@ int getTone(int idx) {
   return (int) (curScore.charAt(idx) - '0');
 }
 
-void sideDrumHitMotion() {
-  println("sideDrumHitMotion()");
-  sideDrumStrike();
-  delay(strike_delay);
-  initSideDrumRelay();
-  delay(switch_delay);
-  sideDrumBack();
-  delay(back_delay);
-  initSideDrumRelay();
-  delay(switch_delay);
+void drumHitMotion(int idx) {
+  switch(idx) {
+    case 0:
+      println("BassDrum");
+      break;
+    case 1:
+      println("SideDrum");
+      break;
+    case 2:
+      println("HihatDrum");
+      break;
+  }
+  prevDrumTime[idx] = millis() % millisLimit;
+  doDrumStrike(idx);
 }
 
-void sideDrumStrike() {
-  setRelayHigh(side_drum_relay_1);
+void doDrumStrike(int idx) {
+  setRelayHigh(drumRelayPin[idx][0]);
+  setRelayLow(drumRelayPin[idx][1]);
 }
 
-void sideDrumBack() {
-  setRelayHigh(side_drum_relay_2);
+void doDrumBack(int idx) {
+  setRelayLow(drumRelayPin[idx][0]);
+  setRelayHigh(drumRelayPin[idx][1]);
 }
 
-void bassDrumHitMotion() {
-  println("bassDrumHitMotion()");
-  bassDrumStrike();
-  delay(strike_delay);
-  initBassDrumRelay();
-  delay(switch_delay);
-  bassDrumBack();
-  delay(back_delay);
-  initBassDrumRelay();
-  delay(switch_delay);
-}
-
-void bassDrumStrike() {
-  setRelayHigh(bass_drum_relay_1);
-}
-
-void bassDrumBack() {
-  setRelayHigh(bass_drum_relay_2);
-}
-
-void initSideDrumRelay() {
-  setRelayLow(side_drum_relay_1);
-  setRelayLow(side_drum_relay_2);
-}
-
-void initBassDrumRelay() {
-  setRelayLow(bass_drum_relay_1);
-  setRelayLow(bass_drum_relay_2);
+void initDrumRelay(int idx) {
+  setRelayLow(drumRelayPin[idx][0]);
+  setRelayLow(drumRelayPin[idx][1]);
 }
 
 void setRelayHigh(int relayPin) {
