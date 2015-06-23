@@ -8,6 +8,7 @@ void doSpeedAnim(boolean isIncrease) {
 	else {
 		curSpeedIdx = (curSpeedIdx + speedList.length - 1) % speedList.length;
 	}
+	isPause = false;
 	println("Speed: " + speedList[curSpeedIdx]);
 }
 
@@ -18,5 +19,6 @@ void doPatternAnim(boolean isIncrease) {
 	else {
 		curPatternIdx = (curPatternIdx + patternList.length - 1) % patternList.length;		
 	}
+	isPause = false;
 	println("Pattern: " + patternList[curPatternIdx]);
 }
