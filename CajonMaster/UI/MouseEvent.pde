@@ -3,9 +3,12 @@ final static int movementTresh = 10;
 static Coord mouseTraceBegin;
 static Coord mouseTraceEnd;
 
+static boolean isMousePressed = false;
+
 void mousePressed() {
 	mouseTraceBegin.x = mouseX;
 	mouseTraceBegin.y = mouseY;
+	isMousePressed = true;
 }
 
 void mouseReleased() {
@@ -13,6 +16,8 @@ void mouseReleased() {
 	mouseTraceEnd.y = mouseY;
 
 	checkTriggerEvent();
+	doGestureRecognizeAndClearList();
+	isMousePressed = false;
 }
 
 void mouseMoved() {
@@ -47,4 +52,9 @@ void checkTriggerEvent() {
 class Coord {
 	public int x;
 	public int y;
+
+	public Coord(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
 };

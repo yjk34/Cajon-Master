@@ -1,6 +1,6 @@
 final static int msperMin = 60000;
 final static int beatsperBar = 4;
-final static int strike_delay = 30;
+final static int strike_delay = 20;
 final static int[][] drumRelayPin = {{6, 7}, {9, 10}, {12, 13}};
 final static int[] prevDrumTime = {0, 0, 0};
 final static boolean[] isDrumBack = {false, false, false};
@@ -41,7 +41,7 @@ void getNewRhythm() {
 
   println("curBeatNum = " + curBeatNum);
   println("curScore = " + curScore);
-}
+  }
 
 void playByScore() {
   if (isPause) return;
@@ -53,18 +53,9 @@ void playByScore() {
       int curPastDrumPeriod = (millis() % millisLimit) - prevDrumTime[i];
       curPastDrumPeriod = curPastDrumPeriod >= 0 ?curPastDrumPeriod : curPastDrumPeriod + millisLimit;
       if (curPastDrumPeriod >= strike_delay) {
-        if (!isDrumBack[i]) {
-          isDrumBack[i] = false;
-          initDrumRelay(i);
-          prevDrumTime[i] = -1;
-          //isDrumBack[i] = true;
-          //doDrumBack(i);
-          //prevDrumTime[i] = millis() % millisLimit;
-        } else {
-          isDrumBack[i] = false;
-          initDrumRelay(i);
-          prevDrumTime[i] = -1;
-        }  
+        isDrumBack[i] = false;
+        initDrumRelay(i);
+        prevDrumTime[i] = -1;
       }
     }
   }
@@ -98,13 +89,13 @@ int getTone(int idx) {
 void drumHitMotion(int idx) {
   switch(idx) {
     case 0:
-      println("BassDrum");
+      //println("BassDrum");
       break;
     case 1:
-      println("SideDrum");
+      //println("SideDrum");
       break;
     case 2:
-      println("HihatDrum");
+      //println("HihatDrum");
       break;
   }
   prevDrumTime[idx] = millis() % millisLimit;
@@ -112,8 +103,8 @@ void drumHitMotion(int idx) {
 }
 
 void doDrumStrike(int idx) {
-  setRelayHigh(drumRelayPin[idx][0]);
   setRelayLow(drumRelayPin[idx][1]);
+  setRelayHigh(drumRelayPin[idx][0]);
 }
 
 void doDrumBack(int idx) {
