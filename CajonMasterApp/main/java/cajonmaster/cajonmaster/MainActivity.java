@@ -33,7 +33,7 @@ import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import at.technikum.mti.fancycoverflow.FancyCoverFlowAdapter;
 
 public class MainActivity extends Activity {
-    private String SERVERADDRESS = "140.112.29.43";
+    private String SERVERADDRESS = null;
     private int SERVERPORT = 5567;
 
     private ProgressBar connectProgressBar = null;
@@ -64,11 +64,11 @@ public class MainActivity extends Activity {
                 if (!playing) {
                     playing = true;
                     controlButton.setBackgroundResource(R.drawable.pause);
-                    sendMsg("continue");
+                    sendMsg("cmd:continue");
                 } else {
                     playing = false;
                     controlButton.setBackgroundResource(R.drawable.conti);
-                    sendMsg("pause");
+                    sendMsg("cmd:pause");
                 }
             }
         });
@@ -151,8 +151,9 @@ public class MainActivity extends Activity {
         protected String doInBackground(Integer... params) {
             try {
                 Log.d("INFO:", "Connecting!!");
+                if (SERVERADDRESS == null) { return null; }
                 SocketUtility.socket = new Socket(SERVERADDRESS, SERVERPORT);
-                SocketUtility.socket.setSoTimeout(5000);
+                SocketUtility.socket.setSoTimeout(3000);
                 if (SocketUtility.socket.isConnected()) {
                     Log.d("INFO:", "Connecting success.");
                     SocketUtility.in = new BufferedReader(new InputStreamReader(SocketUtility.socket.getInputStream()));
