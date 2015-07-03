@@ -23,6 +23,8 @@ void parseAndUpdateInfo(String msg) {
 			doChangeSong(valueInfo);
 		else if (keyInfo.equals("cmd")) 
 			doCmd(valueInfo);
+		else if (keyInfo.equals("gesture"))
+			doGesture(valueInfo);
 	}
 	println(msg);
 	// TODO: Parse what client said
@@ -52,6 +54,16 @@ void doCmd(String valueInfo) {
 		isPause = true;
 	else if (valueInfo.equals("continue"))
 		isPause = false;
+}
+
+void doGesture(String valueInfo) {
+	if (valueInfo.equals("start")) {
+		isGestureListen = true;
+	} else if (valueInfo.equals("end")) {
+		isGestureListen = false;
+		doGestureRecognizeAndClearList();
+	}
+
 }
 
 int findNearestSpeedIdx(int targetSpeed) {

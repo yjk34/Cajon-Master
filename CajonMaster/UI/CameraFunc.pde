@@ -7,6 +7,8 @@ static Capture cam;
 static boolean isCameraOK = false;
 static Vector<CCPoint> pntsList;
 
+final static double TEMPLTATE_SCORE_THRESH = 0.1;
+
 void initCamera() {
   String[] cameras = Capture.list();
   pntsList = new Vector<CCPoint>();
@@ -40,7 +42,7 @@ void updateCam() {
       }
       PVector[] markers = nya.getMarkerVertex2D(0);
 
-      if (isMousePressed) {
+      if (isGestureListen) {
         float tx = 0;
         float ty = 0;
         for (int i=0; i<markers.length; i++) {
@@ -49,23 +51,6 @@ void updateCam() {
         }
         pntsList.add(new CCPoint(tx, ty));
       }
-      //for (int i=0; i<markers.length; i++) 
-      //  println("X: " + markers[i].x + " Y: " + markers[i].y + " Z: " + markers[i].z);
-      /*
-      nya.beginTransform(0,0,255);
-      fill(0,0,255);
-      translate(0,0,20);
-      box(40);
-      nya.endTransform();
-      */
     }
   }
-}
-
-void doGestureRecognizeAndClearList() {
-  MatchingResult mr = gr.checkMatchingGesture(pntsList);
-  pntsList.clear();
-
-  println("This gesture is: " + mr.templateName);
-  println("This gesture score is: " + mr.templateScore);
 }

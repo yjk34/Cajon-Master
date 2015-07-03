@@ -9,6 +9,7 @@ void doSpeedAnim(boolean isIncrease) {
 		curSpeedIdx = (curSpeedIdx + speedList.length - 1) % speedList.length;
 	}
 	isPause = false;
+	curSpeed = speedList[curSpeedIdx];
 	println("Speed: " + speedList[curSpeedIdx]);
 }
 

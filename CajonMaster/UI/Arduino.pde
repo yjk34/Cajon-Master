@@ -1,6 +1,6 @@
 final static int msperMin = 60000;
 final static int beatsperBar = 4;
-final static int strike_delay = 20;
+final static int strike_delay = 25;
 final static int[][] drumRelayPin = {{6, 7}, {9, 10}, {12, 13}};
 final static int[] prevDrumTime = {0, 0, 0};
 final static boolean[] isDrumBack = {false, false, false};
@@ -14,6 +14,7 @@ static int prevActionTime = 0;
 static int curBeatNum = 4;
 static String curScore = "1000";
 static int curScoreIdx = 0;
+static int curSpeed = 80;
 
 void arduinoSetup() {
   for(int i=0; i<drumRelayPin.length; i++) {
@@ -46,7 +47,7 @@ void getNewRhythm() {
 void playByScore() {
   if (isPause) return;
 
-  int millisThresh = 60 * 1000 / (speedList[curSpeedIdx] *  curBeatNum / 4); // N BPM = every 60000 / N millis seconds for 1 hit
+  int millisThresh = 60 * 1000 / (curSpeed *  curBeatNum / 4); // N BPM = every 60000 / N millis seconds for 1 hit
   
   for (int i=0; i<drumRelayPin.length; i++) {
     if (prevDrumTime[i] >= 0) {
