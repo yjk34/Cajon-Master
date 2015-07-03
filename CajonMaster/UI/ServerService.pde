@@ -36,10 +36,12 @@ void doChangeSong(String valueInfo) {
 	
 	if (valueInfo.equals("sad")) {
 		curPatternIdx = SAD_GUY_PATTERN_IDX;
-		curSpeedIdx = findNearestSpeedIdx(SAD_GUY_SPEED);
+		//curSpeedIdx = findNearestSpeedIdx(SAD_GUY_SPEED);
+		curSpeed = SAD_GUY_SPEED;
 	} else if (valueInfo.equals("stop")) {
 		curPatternIdx = STOP_PATTERN_IDX;
-		curSpeedIdx = findNearestSpeedIdx(STOP_SPEED);
+		//curSpeedIdx = findNearestSpeedIdx(STOP_SPEED);
+		curSpeed = STOP_SPEED;
 	} else {
 		isSongInList = false;
 	}

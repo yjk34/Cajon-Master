@@ -1,6 +1,6 @@
 final static int msperMin = 60000;
 final static int beatsperBar = 4;
-final static int strike_delay = 25;
+final static int strike_delay = 20;
 final static int[][] drumRelayPin = {{6, 7}, {9, 10}, {12, 13}};
 final static int[] prevDrumTime = {0, 0, 0};
 final static boolean[] isDrumBack = {false, false, false};
